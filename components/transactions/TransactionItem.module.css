@@ -1,0 +1,94 @@
+.row {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  padding: var(--spacing-md);
+  border-bottom: 1px solid var(--color-border);
+}
+
+.row:last-child {
+  border-bottom: none;
+}
+
+.info {
+  display: flex;
+  flex-direction: column;
+  gap: 2px;
+}
+
+.category {
+  font-size: 14px;
+  font-weight: 600;
+  color: var(--color-text);
+}
+
+.description {
+  font-size: 13px;
+  color: var(--color-text-muted);
+}
+
+.account {
+  font-size: 12px;
+  color: var(--color-text-muted);
+}
+
+.right {
+  display: flex;
+  align-items: center;
+  gap: var(--spacing-lg);
+}
+
+.date {
+  font-size: 13px;
+  color: var(--color-text-muted);
+  min-width: 80px;
+  text-align: right;
+}
+
+.income {
+  color: var(--color-income);
+  font-weight: 600;
+  font-size: 14px;
+  min-width: 90px;
+  text-align: right;
+}
+
+.expense {
+  color: var(--color-expense);
+  font-weight: 600;
+  font-size: 14px;
+  min-width: 90px;
+  text-align: right;
+}
+
+.actions {
+  display: flex;
+  gap: var(--spacing-xs);
+}
+
+.actionButton {
+  padding: var(--spacing-xs) var(--spacing-sm);
+  border: 1px solid var(--color-border);
+  border-radius: var(--radius);
+  background-color: var(--color-bg);
+  color: var(--color-text);
+  font-size: 12px;
+}
+
+.actionButton:hover {
+  background-color: var(--color-border);
+}
+
+.deleteButton {
+  padding: var(--spacing-xs) var(--spacing-sm);
+  border: 1px solid var(--color-danger);
+  border-radius: var(--radius);
+  background-color: transparent;
+  color: var(--color-danger);
+  font-size: 12px;
+}
+
+.deleteButton:hover {
+  background-color: var(--color-danger);
+  color: #ffffff;
+}
