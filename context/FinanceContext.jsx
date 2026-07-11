@@ -8,6 +8,7 @@ import {
   getSavingsGoals, saveSavingsGoals,
   getAccounts, saveAccounts
 } from '@/services/storageService'
+import { generateDueRecurringTransactions } from '@/services/recurringService'
 
 // Central store for every piece of finance data in the app.
 // Any component can read or update this through the useFinance hook —
@@ -23,7 +24,16 @@ export function FinanceProvider({ children }) {
 
   // Load everything from localStorage once, on first mount
   useEffect(() => {
-    setTransactions(getTransactions())
+    const loadedTransactions = getTransactions()
+    const { newTransactions, updatedOriginals } = generateDueRecurringTransactions(loadedTransactions)
+
+    // Apply the catch-up: update each recurring original's tracker, then append the new occurrences
+    const updatedTransactions = loadedTransactions.map(t => {
+      const update = updatedOriginals.find(u => u.id === t.id)
+      return update ? { ...t, recurringLastGenerated: update.recurringLastGenerated } : t
+    })
+
+    setTransactions([...updatedTransactions, ...newTransactions])
     setBudgets(getBudgets())
     setSavingsGoals(getSavingsGoals())
     setAccounts(getAccounts())

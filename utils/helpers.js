@@ -7,12 +7,16 @@ export function formatCurrency(amount) {
 }
 
 // Formats a date string (YYYY-MM-DD) into a readable form, e.g. "Mar 15, 2024"
+// Parses the parts manually and forces UTC on the output so the local timezone
+// never shifts the date backward by a day
 export function formatDate(dateString) {
-  const date = new Date(dateString)
+  const [year, month, day] = dateString.split('-').map(Number)
+  const date = new Date(Date.UTC(year, month - 1, day))
   return new Intl.DateTimeFormat('en-US', {
     year: 'numeric',
     month: 'short',
-    day: 'numeric'
+    day: 'numeric',
+    timeZone: 'UTC'
   }).format(date)
 }
 
@@ -58,4 +62,17 @@ export function calculateTotalExpenses(transactions) {
   return transactions
     .filter(t => t.type === 'expense')
     .reduce((total, t) => total + t.amount, 0)
+}
+
+// Given a recurring transaction's last date and its frequency, returns the next due date
+// Uses UTC throughout so local timezone offsets never shift the date by a day
+export function getNextRecurringDate(dateString, frequency) {
+  const [year, month, day] = dateString.split('-').map(Number)
+  const date = new Date(Date.UTC(year, month - 1, day))
+  if (frequency === 'weekly') {
+    date.setUTCDate(date.getUTCDate() + 7)
+  } else if (frequency === 'monthly') {
+    date.setUTCMonth(date.getUTCMonth() + 1)
+  }
+  return date.toISOString().split('T')[0]
 }
