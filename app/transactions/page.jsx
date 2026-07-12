@@ -8,12 +8,13 @@ import TransactionList from '@/components/transactions/TransactionList'
 import AddTransactionModal from '@/components/modals/AddTransactionModal'
 import Button from '@/components/shared/Button'
 import styles from './page.module.css'
+import { exportTransactionsToCsv } from '@/services/exportService'
 
 const DEFAULT_FILTERS = { month: 'all', category: 'all', accountId: 'all', type: 'all' }
 
 // Transactions page — full list across all time, with filters, add/edit modal, and export (Step 15).
 export default function TransactionsPage() {
-  const { transactions } = useFinance()
+  const { transactions, accounts } = useFinance()
   const [filters, setFilters] = useState(DEFAULT_FILTERS)
   const [isModalOpen, setIsModalOpen] = useState(false)
   const [editingTransaction, setEditingTransaction] = useState(null)
@@ -40,11 +41,18 @@ export default function TransactionsPage() {
     setEditingTransaction(null)
   }
 
+  function handleExport() {
+    exportTransactionsToCsv(filteredTransactions, accounts)
+  }
+
   return (
     <div>
       <div className={styles.header}>
         <h1 className={styles.heading}>Transactions</h1>
-        <Button variant="primary" onClick={handleAddNew}>Add Transaction</Button>
+        <div className={styles.headerActions}>
+          <Button variant="secondary" onClick={handleExport}>Export CSV</Button>
+          <Button variant="primary" onClick={handleAddNew}>Add Transaction</Button>
+        </div>
       </div>
 
       <TransactionFilters filters={filters} onFilterChange={setFilters} />

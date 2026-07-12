@@ -9,3 +9,8 @@
   font-size: 22px;
   font-weight: 700;
 }
+
+.headerActions {
+  display: flex;
+  gap: var(--spacing-sm);
+}
