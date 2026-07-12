@@ -8,9 +8,26 @@ export const metadata = {
   description: 'Track your income, expenses, budgets, and savings goals'
 }
 
+// Runs before React hydrates, directly in the HTML, so the correct theme
+// class is present on <html> before the very first paint — avoids a flash
+// of light mode for users who have dark mode saved.
+const themeInitScript = `
+  (function() {
+    try {
+      var saved = localStorage.getItem('finance_theme')
+      if (saved === 'dark') {
+        document.documentElement.classList.add('dark')
+      }
+    } catch (e) {}
+  })()
+`
+
 export default function RootLayout({ children }) {
   return (
     <html lang="en">
+      <head>
+        <script dangerouslySetInnerHTML={{ __html: themeInitScript }} />
+      </head>
       <body>
         <FinanceProvider>
           <Navbar />

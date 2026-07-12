@@ -9,13 +9,10 @@ import styles from './Navbar.module.css'
 export default function Navbar() {
   const [isDark, setIsDark] = useState(false)
 
-  // On mount, check localStorage for a saved preference and apply it
+  // The inline script in layout.jsx already applied the class before paint —
+  // this just syncs React's state to match what's already on the page
   useEffect(() => {
-    const saved = localStorage.getItem('finance_theme')
-    if (saved === 'dark') {
-      setIsDark(true)
-      document.documentElement.classList.add('dark')
-    }
+    setIsDark(document.documentElement.classList.contains('dark'))
   }, [])
 
   function toggleTheme() {
